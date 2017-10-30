@@ -10,4 +10,10 @@
     <string name="camera_fragment">Camera fragment</string>
     <string name="gallery_fragment">Gallery fragment</string>
     <string name="slideshow_fragment">Slideshow fragment</string>
+
+    <string name="task_one">Task one </string>
+    <string name="task_two">Task two </string>
+    <string name="task_three">Task three </string>
+    <string name="start">Start</string>
+    <string name="my_broadcast">My Broadcast</string>
 </resources>

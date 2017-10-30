@@ -1,7 +1,7 @@
 package com.github.pavelkv96.hw_23102017;
 
-import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -10,12 +10,15 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.github.pavelkv96.hw_23102017.fragments.CameraFragment;
 import com.github.pavelkv96.hw_23102017.fragments.GalleryFragment;
 import com.github.pavelkv96.hw_23102017.fragments.SlideshowFragment;
+
+import java.util.HashMap;
 
 public class SecondActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -28,6 +31,9 @@ public class SecondActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
+
+        HashMap<String, String> hashMapValueEditTexts = (HashMap<String, String>) getIntent().getExtras().get("hash_map_value_edit_texts");
+        Log.e("myLogs", hashMapValueEditTexts != null ? hashMapValueEditTexts.get("email") : null);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -64,48 +70,60 @@ public class SecondActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        return id == R.id.action_settings || super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         switch (item.getItemId()) {
-            case R.id.nav_camera: {
-                if (!cameraFragment.isAdded()) {
-                    fragmentTransaction.add(R.id.container, cameraFragment);
-                }
-                fragmentTransaction.show(cameraFragment);
-                fragmentTransaction.hide(galleryFragment);
-                fragmentTransaction.hide(slideshowFragment);
+            case R.id.action_settings: {
+                Intent firstIntent = new Intent(SecondActivity.this, FirstActivity.class);
+                startActivity(firstIntent);
+                finish();
             }
             break;
-            case R.id.nav_gallery: {
-                if (!galleryFragment.isAdded()) {
-                    fragmentTransaction.add(R.id.container, galleryFragment);
-                }
-                fragmentTransaction.show(galleryFragment);
-                fragmentTransaction.hide(cameraFragment);
-                fragmentTransaction.hide(slideshowFragment);
-            }
-            break;
-            case R.id.nav_slideshow: {
-                if (!slideshowFragment.isAdded()) {
-                    fragmentTransaction.add(R.id.container, slideshowFragment);
-                }
-                fragmentTransaction.show(slideshowFragment);
-                fragmentTransaction.hide(cameraFragment);
-                fragmentTransaction.hide(galleryFragment);
+            case R.id.my_broadcast: {
+                Intent firstIntent = new Intent(SecondActivity.this, MyBroadcastReceiver.class);
+                startActivity(firstIntent);
+                finish();
             }
             break;
         }
-        fragmentTransaction.commit();
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
+        return super.onOptionsItemSelected(item);
     }
-}
+
+        @SuppressWarnings("StatementWithEmptyBody")
+        @Override
+        public boolean onNavigationItemSelected (@NonNull MenuItem item){
+            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+            switch (item.getItemId()) {
+                case R.id.nav_camera: {
+                    if (!cameraFragment.isAdded()) {
+                        fragmentTransaction.add(R.id.container, cameraFragment);
+                    }
+                    fragmentTransaction.show(cameraFragment);
+                    fragmentTransaction.hide(galleryFragment);
+                    fragmentTransaction.hide(slideshowFragment);
+                }
+                break;
+                case R.id.nav_gallery: {
+                    if (!galleryFragment.isAdded()) {
+                        fragmentTransaction.add(R.id.container, galleryFragment);
+                    }
+                    fragmentTransaction.show(galleryFragment);
+                    fragmentTransaction.hide(cameraFragment);
+                    fragmentTransaction.hide(slideshowFragment);
+                }
+                break;
+                case R.id.nav_slideshow: {
+                    if (!slideshowFragment.isAdded()) {
+                        fragmentTransaction.add(R.id.container, slideshowFragment);
+                    }
+                    fragmentTransaction.show(slideshowFragment);
+                    fragmentTransaction.hide(cameraFragment);
+                    fragmentTransaction.hide(galleryFragment);
+                }
+                break;
+            }
+            fragmentTransaction.commit();
+
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+            return true;
+        }
+    }
